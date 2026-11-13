@@ -704,7 +704,7 @@
     }
 
     sell() {
-      const refund = Math.floor(this.totalInvested * 0.7);
+      const refund = Math.floor(this.totalInvested * 70 / 100);
       credits += refund;
       playSound('buy');
       burst(this.x, this.y, '#ffe600', 12);
@@ -718,6 +718,7 @@
       let best = null;
       let minD = this.rng;
       for (const c of creeps) {
+        if (c.hp <= 0) continue;
         const d = Math.hypot(c.x - this.x, c.y - this.y);
         if (d <= minD) {
           minD = d;
@@ -787,7 +788,7 @@
           let next = null;
           let nextD = 120;
           for (const c of creeps) {
-            if (!hits.includes(c)) {
+            if (c.hp > 0 && !hits.includes(c)) {
               const d = Math.hypot(c.x - last.x, c.y - last.y);
               if (d <= nextD) {
                 nextD = d;
@@ -1047,7 +1048,7 @@
         upBtn.textContent = `MAX`;
         upBtn.disabled = true;
       }
-      const refund = Math.floor(inspectingTower.totalInvested * 0.7);
+      const refund = Math.floor(inspectingTower.totalInvested * 70 / 100);
       document.getElementById('btn-sell').textContent = `SELL ($${refund})`;
     }
   }
