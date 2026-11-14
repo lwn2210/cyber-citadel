@@ -1,5 +1,5 @@
 // PLAYWRIGHT_MODULE_PATH=/path/to/playwright node tests/tower-browser.cjs output.json
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH||'playwright');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH||process.env.PLAYWRIGHT_MODULE||'playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {once}=require('node:events');
 (async()=>{
@@ -49,5 +49,5 @@ const {once}=require('node:events');
    }catch(e){result.state='failed';result.failure=String(e);report.failed++;process.exitCode=1}
    await page.close();report.scenarios.push(result);
   }
- }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));fs.writeFileSync(process.argv[2],JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2))}
+ }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));if(process.argv[2])fs.writeFileSync(process.argv[2],JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2))}
 })().catch(e=>{console.error(e);process.exitCode=1});
